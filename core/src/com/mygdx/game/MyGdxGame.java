@@ -111,12 +111,14 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		random = new Random();
 
+		//
 		larguraDispositivo = VIRTUAL_WIDTH;
 		alturaDispositivo = VIRTUAL_HEIGHT;
 		posicaoInicialVerticalPassaro = alturaDispositivo / 2;
 		posicaoCanoHorizontal = larguraDispositivo;
 		espacoEntreCanos = 350;
 
+		// Inicializar os textos
 		textoPontuacao = new BitmapFont();
 		textoPontuacao.setColor(Color.WHITE);
 		textoPontuacao.getData().setScale(10);
@@ -129,18 +131,22 @@ public class MyGdxGame extends ApplicationAdapter {
 		textoMelhorPontuacao.setColor(Color.RED);
 		textoMelhorPontuacao.getData().setScale(2);
 
+		//
 		shapeRenderer = new ShapeRenderer();
 		circuloPassaro = new Circle();
 		retanguloCanoBaixo = new Rectangle();
 		retanguloCanoCima = new Rectangle();
 
+		// Inicializar os sons
 		somVoando = Gdx.audio.newSound(Gdx.files.internal("som_asa.wav"));
 		somColisao = Gdx.audio.newSound(Gdx.files.internal("som_batida.wav"));
 		somPontuacao = Gdx.audio.newSound(Gdx.files.internal("som_pontos.wav"));
 
+		// Criar preferencias
 		preferencias = Gdx.app.getPreferences("flappyBird");
 		pontuacaoMaxima = 	preferencias.getInteger("pontuacaoMaxima", 0);
 
+		// Inicializar nova camera
 		camera = new OrthographicCamera();
 		camera.position.set(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0);
 		viewport = new StretchViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
@@ -148,28 +154,39 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	private void verificarEstadoJogo() {
 
+		// Variavel para verificar se o player tocou na tela
 		boolean toqueTela = Gdx.input.justTouched();
+
+		// Se o jogador estiver no estado 0 ("idle") e tocar na tela iniciar o jogo, adicionar altura e passar para o estado 1
 		if (estadoJogo == 0) {
 			if (toqueTela) {
 				gravidade = -15;
 				estadoJogo = 1;
 				somVoando.play();
 			}
+		// Se o jogador estiver no estado 1...
 		}else if(estadoJogo == 1) {
+			// Se o jogador tocar na tela adicionar altura e tocar som
 			if (toqueTela) {
 				gravidade = -15;
 				somVoando.play();
 			}
+
+			// Movimentar o cano na horizontal
 			posicaoCanoHorizontal -= Gdx.graphics.getDeltaTime() * 200;
+			//
 			if (posicaoCanoHorizontal < -canoTopo.getWidth()) {
 				posicaoCanoHorizontal = larguraDispositivo;
 				posicaoCanoVertical = random.nextInt(400) - 200;
 				passouCano = false;
 			}
+			//
 			if (posicaoInicialVerticalPassaro > 0 || toqueTela) {
 				posicaoInicialVerticalPassaro = posicaoInicialVerticalPassaro - gravidade;
 				gravidade++;
 			}
+
+		//
 		}else if (estadoJogo == 2){
 			if (pontos > pontuacaoMaxima){
 				pontuacaoMaxima = pontos;
