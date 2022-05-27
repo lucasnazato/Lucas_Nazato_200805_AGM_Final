@@ -42,7 +42,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	private Circle circuloMoedaDourada;
 	private Circle circuloMoedaPrata;
 
-	//
+	// Definir variaveis de posicao, pontuacao etc
 	private float larguraDispositivo;
 	private float alturaDispositivo;
 	private float variacao = 0;
@@ -72,7 +72,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	Sound somColisao;
 	Sound somPontuacao;
 
-	//
+	// Preferencias para guardar as preferencias
 	Preferences preferencias;
 
 	// Criar camera virtual do jogo
@@ -89,7 +89,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		inicializarObjetos();
 	}
 
-	//
+	// Chama todos os metodos que precisam rodar durante o jogo
 	@Override
 	public void render () {
 
@@ -192,7 +192,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		viewport = new StretchViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
 	}
 
-	//
+	// Metodo para verificar em qual estado o jogo esta
 	private void verificarEstadoJogo() {
 
 		// Variavel para verificar se o player tocou na tela
@@ -216,14 +216,14 @@ public class MyGdxGame extends ApplicationAdapter {
 			// Movimentar o cano na horizontal
 			posicaoCanoHorizontal -= Gdx.graphics.getDeltaTime() * 200;
 
-			//
+			// Se o cano sair da tela, voltar o cano para o outro lado e variar a altura dele
 			if (posicaoCanoHorizontal < -canoTopo.getWidth()) {
 				posicaoCanoHorizontal = larguraDispositivo;
 				posicaoCanoVertical = random.nextInt(400) - 200;
 				passouCano = false;
 			}
 
-			//
+			// Se o passaro estiver dentro da tela e tocar na tela, mudar a sua posicao vertical
 			if (posicaoInicialVerticalPassaro > 0 || toqueTela) {
 				posicaoInicialVerticalPassaro = posicaoInicialVerticalPassaro - gravidade;
 				gravidade++;
@@ -232,6 +232,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			// Movimentar a moeda dourada na horizontal
 			posicaoHorizontalMoedaDourada -= Gdx.graphics.getDeltaTime() * 200;
 
+			// Se a moeda sair da tela, mudar a posicao da moeda para um ponto aleatorio
 			if (posicaoHorizontalMoedaDourada <= -moedaDourada.getWidth()){
 				posicaoHorizontalMoedaDourada = larguraDispositivo;
 				posicaoVerticalMoedaDourada = random.nextInt((int) alturaDispositivo);
@@ -240,11 +241,13 @@ public class MyGdxGame extends ApplicationAdapter {
 			// Movimentar a moeda prata na horizontal
 			posicaoHorizontalMoedaPrata -= Gdx.graphics.getDeltaTime() * 200;
 
+			// Se a moeda sair da tela, mudar a posicao da moeda para um ponto aleatorio
 			if (posicaoHorizontalMoedaPrata <= -moedaPrata.getWidth()){
 				posicaoHorizontalMoedaPrata = larguraDispositivo;
 				posicaoVerticalMoedaPrata = random.nextInt((int) alturaDispositivo);
 			}
-		//
+
+		// Se acontecer um game over, atualizar  a pontuacao maxima e mudar a posicao do personagem
 		}else if (estadoJogo == 2){
 			if (pontos > pontuacaoMaxima){
 				pontuacaoMaxima = pontos;
@@ -253,7 +256,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			}
 			posicaoHorizontalPassaro -= Gdx.graphics.getDeltaTime()*500;
 
-			//
+			// Se tocar na tela, voltar para o estado 0 (resetar as variaveis e reiniciar o jogo)
 			if (toqueTela){
 				estadoJogo = 0;
 				pontos = 0;
@@ -265,10 +268,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 	}
 
-	//
+	// Metodo para dar pontos ao player quando passar pelos canos
 	private void validarPontos() {
 
-		//
+		// Se o player passar pelo cano, aumentar a pontuacao
 		if (posicaoCanoHorizontal < 50 - passaros[0].getWidth()){
 			if (!passouCano){
 				pontos++;
@@ -293,7 +296,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		//
 		batch.begin();
 
-		// Desenhar oos intens do jogo (tela de fundo, player, canos, texto de pontuacao e moedas)
+		// Desenhar oos itens do jogo (tela de fundo, player, canos, texto de pontuacao e moedas)
 		batch.draw(fundo, 0, 0, larguraDispositivo, alturaDispositivo);
 		batch.draw(passaros[ (int) variacao],
 			50 + posicaoHorizontalPassaro, posicaoInicialVerticalPassaro);
