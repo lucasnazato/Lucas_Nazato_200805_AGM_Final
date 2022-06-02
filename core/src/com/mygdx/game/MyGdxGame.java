@@ -335,7 +335,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		// Circulo de colisao para o player
 		circuloPassaro.set(
-				posicaoHorizontalPassaro + passaros[0].getWidth() / 2,
+				50 + posicaoHorizontalPassaro + passaros[0].getWidth() / 2,
 				posicaoInicialVerticalPassaro + passaros[0].getHeight() / 2,
 				passaros[0].getWidth() / 2
 		);
@@ -347,7 +347,7 @@ public class MyGdxGame extends ApplicationAdapter {
 				canoBaixo.getWidth(), canoBaixo.getHeight()
 		);
 
-		// Retangulo de colisao parao cano de baixo
+		// Retangulo de colisao para o cano de baixo
 		retanguloCanoCima.set(
 				posicaoCanoHorizontal, alturaDispositivo / 2 + espacoEntreCanos / 2 + posicaoCanoVertical,
 				canoTopo.getWidth(), canoTopo.getHeight()
