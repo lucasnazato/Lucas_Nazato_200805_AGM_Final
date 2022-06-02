@@ -103,7 +103,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		detectarColisoes();
 	}
 
-	//
+	// Descarta os recursos do batch e img
 	@Override
 	public void dispose () {
 		batch.dispose();
@@ -282,18 +282,18 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		variacao = Gdx.graphics.getDeltaTime() + 10;
 
-		//
+		// Varivel para escolher qual sprite do player sera desenhada na tela
 		if (variacao > 3)
 			variacao = 0;
 	}
 
-	//
+	// Desenhar todas as texturas do jogo
 	private void desenharTexturas() {
 
-		//
+		// Definir a matrix usada pelo batch
 		batch.setProjectionMatrix(camera.combined);
 
-		//
+		// Iniciar o batch para desenhar as texturas
 		batch.begin();
 
 		// Desenhar oos itens do jogo (tela de fundo, player, canos, texto de pontuacao e moedas)
@@ -326,55 +326,55 @@ public class MyGdxGame extends ApplicationAdapter {
 					larguraDispositivo / 2 - 140, alturaDispositivo / 2 - gameOver.getHeight());
 		}
 
-		//
+		// Finalizar o batch
 		batch.end();
 	}
 
-	//
+	// Detectar as colisões do jogo
 	private void detectarColisoes() {
 
-		//
+		// Circulo de colisao para o player
 		circuloPassaro.set(
 				posicaoHorizontalPassaro + passaros[0].getWidth() / 2,
 				posicaoInicialVerticalPassaro + passaros[0].getHeight() / 2,
 				passaros[0].getWidth() / 2
 		);
 
-		//
+		// Retangulo de colisao para o cano de cima
 		retanguloCanoBaixo.set(
 				posicaoCanoHorizontal,
 				alturaDispositivo / 2 - canoBaixo.getHeight() - espacoEntreCanos / 2 + posicaoCanoVertical,
 				canoBaixo.getWidth(), canoBaixo.getHeight()
 		);
 
-		//
+		// Retangulo de colisao parao cano de baixo
 		retanguloCanoCima.set(
 				posicaoCanoHorizontal, alturaDispositivo / 2 + espacoEntreCanos / 2 + posicaoCanoVertical,
 				canoTopo.getWidth(), canoTopo.getHeight()
 		);
 
 
-		//
+		// Circulo de colisao da moeda dourada
 		circuloMoedaDourada.set(
 				posicaoHorizontalMoedaDourada + moedaDourada.getWidth() / 2,
 				posicaoVerticalMoedaDourada + moedaDourada.getHeight() / 2,
 				moedaDourada.getWidth() / 2
 		);
 
-		//
+		// Circulo de colisao da moeda prata
 		circuloMoedaPrata.set(
 				posicaoHorizontalMoedaPrata + moedaPrata.getWidth() / 2,
 				posicaoVerticalMoedaPrata + moedaPrata.getHeight() / 2,
 				moedaPrata.getWidth() / 2
 		);
 
-		//
+		// Variaveis bool para detectar colisões entre o player e os canos e moedas
 		boolean colidiuCanoCima = Intersector.overlaps(circuloPassaro, retanguloCanoCima);
 		boolean colidiuCanoBaixo = Intersector.overlaps(circuloPassaro, retanguloCanoBaixo);
 		boolean colidiuMoedaDourada = Intersector.overlaps(circuloPassaro, circuloMoedaDourada);
 		boolean colidiuMoedaPrata = Intersector.overlaps(circuloPassaro, circuloMoedaPrata);
 
-		// Se o player colidir com o cano ir para o estado 1
+		// Se o player colidir com o cano de cima ou de baixo e se estiver no estado 1, tocar som de colisao e ir para o estado 2
 		if (colidiuCanoCima || colidiuCanoBaixo){
 			if (estadoJogo == 1){
 				somColisao.play();
@@ -382,7 +382,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			}
 		}
 
-		//
+		// Se colidir com a moeda prata, tocar som de colisao, somar 5 pontos e escolher uma novo localizaçao para a moeda
 		if (colidiuMoedaPrata){
 			pontos += 5;
 			somPontuacao.play();
@@ -391,7 +391,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			posicaoVerticalMoedaPrata = random.nextInt((int) alturaDispositivo);
 		}
 
-		//
+		// Se colidir com a moeda dourada, tocar som de colisao, somar 10 pontos e escolher uma novo localizaçao para a moeda
 		if (colidiuMoedaDourada){
 			pontos += 10;
 			somPontuacao.play();
